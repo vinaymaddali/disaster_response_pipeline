@@ -122,7 +122,7 @@ def evaluate_model(model, X_test, Y_test, category_names):
     Return: None
     """
     preds = model.predict(X_test)
-    results = get_results(category_names, y_test, preds)
+    results = get_results(category_names, Y_test, preds)
     
     return
 
