@@ -1,8 +1,17 @@
+# This is part of the 'Disaster Response Pipelines' project for the Udacity Data Scientist Specialization.
+# The template had been provided as part of the coursework along with some important functionalities in the code.
+
 import sys
 import pandas as pd
 from sqlalchemy import create_engine
 
 def load_data(messages_filepath, categories_filepath):
+    """
+    Function to load data given disaster messages and corresponding categories file.
+    Input: messages_filepath: str, containing the path to the messages file.
+           categories_filepath: str, containing the path to the categories file.
+    Return: df: pandas DataFrame: Merged data of both the above.
+    """
     messages = pd.read_csv(messages_filepath)
     categories = pd.read_csv(categories_filepath)
     df = messages.merge(categories, on='id')
@@ -11,6 +20,11 @@ def load_data(messages_filepath, categories_filepath):
 
 
 def clean_data(df):
+    """
+    Function to clean data before training a model and testing for evaluation.
+    Input: df: pandas DataFrame: Input data with messages and cateogories.
+    return: df: pandas DataFrame: Clean data
+    """
     categories = df['categories'].str.split(';', expand=True)
     # select the first row of the categories dataframe
     row = categories.iloc[0]
@@ -40,11 +54,17 @@ def clean_data(df):
 
 
 def save_data(df, database_filename):
+    """
+    Function to save data to local database file.
+    Input: df: pandas DataFrame: Input data with messages and cateogories.
+           database_filename: str, paht to save the db file.
+    return: None
+    """
     
     engine = create_engine('sqlite:///{}'.format(database_filename))
     df.to_sql('messages', engine, index=False)
     
-    pass  
+    return 
 
 
 def main():

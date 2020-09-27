@@ -1,3 +1,6 @@
+# This is part of the 'Disaster Response Pipelines' project for the Udacity Data Scientist Specialization.
+# The template had been provided as part of the coursework along with some important functionalities in the code.
+
 # General utilities
 import sys
 import numpy as np
@@ -55,20 +58,29 @@ def tokenize(text):
 
 
 def build_model():
+    """
+    Function to build model which involves setting up the pipeline of various steps to train an NLP model.
+    Input: None
+    Return: model: scikit-learn model: Can be used to train on data and evaluate on test set.
+    """
+    
+    # Steps: tokenize, transform to get Tfidf vectors for data, classifier to train
     pipeline = Pipeline([
         ('vect', CountVectorizer(tokenizer=tokenize)),
         ('tfidf', TfidfTransformer()),
         ('clf', MultiOutputClassifier(AdaBoostClassifier()))
     ])
 
+    # Parameter search on sklearn cross validation
     parameters = {
         'clf__estimator__n_estimators': [50,100,200],
         'clf__estimator__learning_rate': [0.1, 0.5, 1.0]
     }
 
-    xgb_adb = GridSearchCV(pipeline, param_grid=parameters, n_jobs=-1)
+    # grid search on data to obtain best parameters.
+    model = GridSearchCV(pipeline, param_grid=parameters, n_jobs=-1)
     
-    return xgb_adb
+    return model
 
 
 def get_results(category_cols, y_test, preds):
@@ -102,6 +114,13 @@ def get_results(category_cols, y_test, preds):
 
 
 def evaluate_model(model, X_test, Y_test, category_names):
+    """
+    Function to evaluate model on test data.
+    Input: model: scikit-learn model: Mode trained on train data. Should have a .predict functionality.
+            X_test: array/numpy array: Test set from train_test_split function.
+            Y_test: array/numpy array: Labels for test set from train_test_split function.
+    Return: None
+    """
     preds = model.predict(X_test)
     results = get_results(category_names, y_test, preds)
     
@@ -109,6 +128,12 @@ def evaluate_model(model, X_test, Y_test, category_names):
 
 
 def save_model(model, model_filepath):
+    """
+    Function to save model to local filepath.
+    Input: model: scikit-learn model: Mode trained on train data. Should have a .predict functionality.
+           model_filepath: str: containing the path to the model.
+    Return: None
+    """
     pkl.dump(model, open(model_filepath, 'wb'))
     
     return
