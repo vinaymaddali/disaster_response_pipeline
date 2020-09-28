@@ -3,6 +3,8 @@
 # Installation
 This code runs python 3.
 Jupyter notebook was installed using Anaconda: https://jupyter-notebook-beginner-guide.readthedocs.io/en/latest/install.html <br />
+XGBoost package: https://xgboost.readthedocs.io/en/latest/get_started.html
+Pandarallel: https://pypi.org/project/pandarallel/
 
 # Data
 The data files were provided in the project by Udacity. It consists of messages sent during various disaster events
@@ -21,9 +23,20 @@ right disaster relief agency.
                         train data, builds and saves model that classifies categories of messages.
 3. run.py: Brings up a web application that visualizes data and uses saved model from train_classifier.py to classify
            input messages.
+4. ModelComparison.ipynb: Similar to train_classifier.py but provides an extended analysis with performances of other
+                          classifiers and features.
+
+# How to bring up application
+python process_data.py <messages.csv/(messages file)> <categories.csv/(categories file)> DisasterResponse.db
+python train_classifier.py DisasterResponse.db classifier.pkl
+python run.py
+To bring up web app, access: http://0.0.0.0:3001/
 
 # Results
+Refer to ModelComparison.ipynb for comparison of different classifiers and a word2vec feature extractor.
 
+# References:
+https://www.oreilly.com/library/view/applied-text-analysis/9781491963036/ch04.html
 
 # Acknowledgements
 Thanks to Udacity for this project and pointing me to this dataset. <br />
