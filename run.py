@@ -1,3 +1,7 @@
+# This is part of the 'Disaster Response Pipelines' project for the Udacity Data Scientist Specialization.
+# This template had been provided as part of the coursework along with some important functionalities in the code.
+# Some lines of code have been added to the provided template in order to add additional visualizations.
+
 import json
 import plotly
 import pandas as pd
@@ -39,12 +43,19 @@ model = joblib.load("classifier.pkl")
 def index():
     
     # extract data needed for visuals
-    # TODO: Below is an example - modify to extract data for your own visuals
     genre_counts = df.groupby('genre').count()['message']
     genre_names = list(genre_counts.index)
     
+    # Count number of positive labels for each category
+    category_cols = []
+    category_pos = []
+    for col in df.columns:
+        if col not in ['id', 'message', 'original', 'genre']:
+            category_cols.append(col)
+            category_pos.append(sum(df[col].values.astype(int)))
+    
+    
     # create visuals
-    # TODO: Below is an example - modify to create your own visuals
     graphs = [
         {
             'data': [
@@ -61,6 +72,24 @@ def index():
                 },
                 'xaxis': {
                     'title': "Genre"
+                }
+            }
+        },
+        {
+            'data': [
+                Bar(
+                    x=category_cols,
+                    y=category_pos
+                )
+            ],
+
+            'layout': {
+                'title': 'Number of samples in each category',
+                'yaxis': {
+                    'title': "Count"
+                },
+                'xaxis': {
+                    'title': "Category"
                 }
             }
         }
