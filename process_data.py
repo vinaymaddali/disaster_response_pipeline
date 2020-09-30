@@ -39,8 +39,9 @@ def clean_data(df):
         # set each value to be the last character of the string
         categories[column] = categories[column].str.strip().str[-1]
     
-    # convert column from string to numeric
-    categories[column] = pd.to_numeric(categories[column].astype(str))
+        # convert column from string to numeric
+        categories[column] = pd.to_numeric(categories[column].astype(str))
+        categories.loc[categories[column] == 2, column] = 1
 
     # drop the original categories column from `df`
     df.drop(labels='categories', axis=1, inplace=True)

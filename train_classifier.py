@@ -73,44 +73,14 @@ def build_model():
 
     # Parameter search on sklearn cross validation
     parameters = {
-        'clf__estimator__n_estimators': [50,100,200],
-        'clf__estimator__learning_rate': [0.1, 0.5, 1.0]
+        'clf__estimator__n_estimators': [50],#,100,200],
+        'clf__estimator__learning_rate': [0.1]#, 0.5, 1.0]
     }
 
     # grid search on data to obtain best parameters.
     model = GridSearchCV(pipeline, param_grid=parameters, n_jobs=-1)
     
     return model
-
-
-def get_results(category_cols, y_test, preds):
-    """
-    Function to calculate f1-score, precision and recall of each category.
-    Uses classification report function of scikit learn and reports the macro average which is the non-weighted
-    average of each category.
-    Input: category_cols: category columns in data as list
-           y_test: Labels as numpy array
-           preds: Output predictions from classifier
-    Output: dict: results dictionary from classification report function.
-    """
-    results = dict()
-    avg_calc = {'f1_score': [], 'precision': [], 'recall': []}
-    print("Category : f1-score, precision, recall\n")
-    for ix, col in enumerate(category_cols):
-        results[col] = classification_report(y_test[:,ix], preds[:, ix], output_dict=True)
-        f1_score, precision, recall = results[col]['macro avg']['f1-score'], results[col]['macro avg']['precision'], \
-                                      results[col]['macro avg']['recall']
-        avg_calc['f1_score'].append(f1_score)
-        avg_calc['precision'].append(precision)
-        avg_calc['recall'].append(recall)
-        print("{} : {}, {}, {}".format(col, f1_score, precision, recall))
-    
-    print("\n\n\n")
-    print("Avg. across categories:")
-    print("f1-score: {}".format(np.mean(avg_calc['f1_score'])))
-    print("precision: {}".format(np.mean(avg_calc['precision'])))
-    print("recall: {}".format(np.mean(avg_calc['recall'])))
-    return results
 
 
 def evaluate_model(model, X_test, Y_test, category_names):
@@ -122,7 +92,7 @@ def evaluate_model(model, X_test, Y_test, category_names):
     Return: None
     """
     preds = model.predict(X_test)
-    results = get_results(category_names, Y_test, preds)
+    print(classification_report(Y_test, preds, target_names=category_names))
     
     return
 
