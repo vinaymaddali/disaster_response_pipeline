@@ -73,8 +73,8 @@ def build_model():
 
     # Parameter search on sklearn cross validation
     parameters = {
-        'clf__estimator__n_estimators': [50],#,100,200],
-        'clf__estimator__learning_rate': [0.1]#, 0.5, 1.0]
+        'clf__estimator__n_estimators': [50, 100, 200],
+        'clf__estimator__learning_rate': [0.1, 0.5, 1.0]
     }
 
     # grid search on data to obtain best parameters.
